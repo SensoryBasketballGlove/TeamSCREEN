@@ -36,6 +36,7 @@ class GloveViewModel: NSObject, ObservableObject, CBCentralManagerDelegate, CBPe
     @Published var sessions: [SessionEntity] = []
     @Published var sessionShots: [ShotEntity] = []
     @Published var targetShotEntity: [TargetEntity] = []
+    
     override init() {
         super.init()
         myCentral = CBCentralManager(delegate: self, queue: nil)
@@ -49,7 +50,6 @@ class GloveViewModel: NSObject, ObservableObject, CBCentralManagerDelegate, CBPe
 extension GloveViewModel {
     //this is called everytime a value is read from the sensors
     func recordShot() {
-        
         if beginLookingForTargetShot == true {
             //detect beggining of the shot
             if (glove.currentShot.zAccVals.last! < 40.0) && (!glove.shotBegan) {
@@ -78,7 +78,8 @@ extension GloveViewModel {
                 glove.targetShot.middleFlexVals.append(glove.currentShot.middleFlexVals.last!)
                 glove.targetShot.ringFlexVals.append(glove.currentShot.ringFlexVals.last!)
                 glove.targetShot.pinkieFlexVals.append(glove.currentShot.pinkieFlexVals.last!)
-                
+//                glove.targetShot.wristFlexVals.append(glove.currentShot.wristFlexVals.last!)
+//                glove.targetShot.thumbFlexVals.append(glove.currentShot.thumbFlexVals.last!)
             }
             
             if endBuffer == glove.numAfter {
@@ -118,8 +119,8 @@ extension GloveViewModel {
                 recordingShot.middleFlexVals.append(glove.currentShot.middleFlexVals.last!)
                 recordingShot.ringFlexVals.append(glove.currentShot.ringFlexVals.last!)
                 recordingShot.pinkieFlexVals.append(glove.currentShot.pinkieFlexVals.last!)
-                
-                
+//                recordingShot.wristFlexVals.append(glove.currentShot.wristFlexVals.last!)
+//                recordingShot.thumbFlexVals.append(glove.currentShot.thumbFlexVals.last!)
             }
             
             if endBuffer == glove.numAfter {
@@ -129,13 +130,14 @@ extension GloveViewModel {
                 recordingShot.id = String(glove.shotHistory.count)
                 endBuffer = 0
                 
-                if recordingShot.overallSimilarity > 60.0 && recordingShot.accSimilarity > 58 {
+                if recordingShot.overallSimilarity > 50.0 && recordingShot.accSimilarity > 58 {
                     glove.shotHistory.append(recordingShot)
                     if recordingShot.overallSimilarity > 85 {
                         writeValue(val: 1)
                     } else {
                         writeValue(val: 2)
                     }
+                    
                     print("Shot recorded")
                 } else {
                     print("\(recordingShot.overallSimilarity), \(recordingShot.flexSimilarity), \(recordingShot.gyroSimilarity), \(recordingShot.accSimilarity)")
@@ -160,7 +162,9 @@ extension GloveViewModel {
         var zGyroValue      = sensorValues[6]
         let middleFlexSensorValue = sensorValues[7]
         let ringFlexSensorValue = sensorValues[8]
-        let pinkieFlexSensorValue = sensorValues[9]
+        let pinkieFlexSensorValue: Float = 0 //sensorValues[9]
+        let thumbFlexSensorValue: Float = 0 //sensorValues[10]
+        let wristFlexSensorValue: Float = 0 //sensorValues[11]
         
         let accValues = [xAccValue, yAccValue, zAccValue]
         let gyroValues = [xGyroValue, yGyroValue, zGyroValue]
@@ -187,6 +191,8 @@ extension GloveViewModel {
             glove.currentShot.middleFlexVals.append(middleFlexSensorValue)
             glove.currentShot.ringFlexVals.append(ringFlexSensorValue)
             glove.currentShot.pinkieFlexVals.append(pinkieFlexSensorValue)
+            glove.currentShot.thumbFlexVals.append(thumbFlexSensorValue)
+            glove.currentShot.wristFlexVals.append(wristFlexSensorValue)
         } else {
             
             //append new values
@@ -200,7 +206,8 @@ extension GloveViewModel {
             glove.currentShot.middleFlexVals.append(middleFlexSensorValue)
             glove.currentShot.ringFlexVals.append(ringFlexSensorValue)
             glove.currentShot.pinkieFlexVals.append(pinkieFlexSensorValue)
-
+            glove.currentShot.thumbFlexVals.append(thumbFlexSensorValue)
+            glove.currentShot.wristFlexVals.append(wristFlexSensorValue)
             
             //remove the first values
             glove.currentShot.pointFlexVals.remove(at: 0)
@@ -213,6 +220,8 @@ extension GloveViewModel {
             glove.currentShot.middleFlexVals.remove(at: 0)
             glove.currentShot.ringFlexVals.remove(at: 0)
             glove.currentShot.pinkieFlexVals.remove(at: 0)
+            glove.currentShot.thumbFlexVals.remove(at: 0)
+            glove.currentShot.wristFlexVals.remove(at: 0)
 
         }
         recordShot()
@@ -234,6 +243,7 @@ extension GloveViewModel {
         shotModel.middleFlexVals    = shotEntity.middleFlexVals!
         shotModel.ringFlexVals      = shotEntity.ringFlexVals!
         shotModel.pinkieFlexVals    = shotEntity.pinkieFlexVals!
+        shotModel.thumbFlexVals     = shotEntity.thumbFlexVals!
         shotModel.wristFlexVals     = shotEntity.wristFlexVals!
         shotModel.xGyroVals         = shotEntity.xGyroVals!
         shotModel.yGyroVals         = shotEntity.yGyroVals!
@@ -257,6 +267,7 @@ extension GloveViewModel {
         shotModel.middleFlexVals    = shotEntity.middleFlexVals!
         shotModel.ringFlexVals      = shotEntity.ringFlexVals!
         shotModel.pinkieFlexVals    = shotEntity.pinkieFlexVals!
+        shotModel.thumbFlexVals     = shotEntity.thumbFlexVals!
         shotModel.wristFlexVals     = shotEntity.wristFlexVals!
         shotModel.xGyroVals         = shotEntity.xGyroVals!
         shotModel.yGyroVals         = shotEntity.yGyroVals!
@@ -320,6 +331,7 @@ extension GloveViewModel {
         shotEntity.middleFlexVals    = shot.middleFlexVals
         shotEntity.ringFlexVals      = shot.ringFlexVals
         shotEntity.pinkieFlexVals    = shot.pinkieFlexVals
+        shotEntity.thumbFlexVals     = shot.thumbFlexVals
         shotEntity.wristFlexVals     = shot.wristFlexVals
         shotEntity.xGyroVals         = shot.xGyroVals
         shotEntity.yGyroVals         = shot.yGyroVals
@@ -352,6 +364,7 @@ extension GloveViewModel {
             newShot.middleFlexVals    = shot.middleFlexVals
             newShot.ringFlexVals      = shot.ringFlexVals
             newShot.pinkieFlexVals    = shot.pinkieFlexVals
+            newShot.thumbFlexVals     = shot.thumbFlexVals
             newShot.wristFlexVals     = shot.wristFlexVals
             newShot.xGyroVals         = shot.xGyroVals
             newShot.yGyroVals         = shot.yGyroVals
@@ -508,12 +521,12 @@ extension GloveViewModel {
             guard let value = characteristic.value else {
                     return
             }
-            guard value.count == 40  else {
+            guard value.count == 40  else { //48
                 return
             }
             
             let byteArray: [UInt8] = [UInt8](value)
-            let data: Data = Data(bytes: byteArray, count: 40)
+            let data: Data = Data(bytes: byteArray, count: 40) //48
             let floatsFromData = data.toArray(type: Float.self)
             
             appendSensorData(sensorValues: floatsFromData)

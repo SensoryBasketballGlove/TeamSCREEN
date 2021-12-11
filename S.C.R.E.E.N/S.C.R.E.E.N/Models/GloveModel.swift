@@ -48,6 +48,8 @@ struct GloveModel: Identifiable {
             var middleFlexSimilarity: Float = 0
             var ringFlexSimilairty: Float = 0
             var pinkieFlexSimilarity: Float = 0
+            var thumbFlexSimilarity: Float = 0
+            var wristFlexSimilarity: Float = 0
             
             //comparsion shot vs targetShot
             //50, some number durring, 100 after
@@ -64,6 +66,8 @@ struct GloveModel: Identifiable {
                 let shotMiddleFlexVal = shot.middleFlexVals[(shot.middleFlexVals.count) - i]
                 let shotRingFlexVal = shot.ringFlexVals[(shot.ringFlexVals.count) - i]
                 let shotPinkytFlexVal = shot.pinkieFlexVals[(shot.pinkieFlexVals.count) - i]
+                let shotThumbFlexVal = shot.thumbFlexVals[(shot.thumbFlexVals.count) - i]
+                let shotWristFlexVal = shot.wristFlexVals[(shot.wristFlexVals.count) - i]
                 
                 let targetShotXAccVal = targetShot.xAccVals[targetShot.xAccVals.count - i]
                 let targetShotYAccVal = targetShot.yAccVals[targetShot.yAccVals.count - i]
@@ -77,6 +81,9 @@ struct GloveModel: Identifiable {
                 let targetMiddleFlexVal = targetShot.middleFlexVals[(targetShot.middleFlexVals.count) - i]
                 let targetRingFlexVal = targetShot.ringFlexVals[(targetShot.ringFlexVals.count) - i]
                 let targetPinkieFlexVal = targetShot.pinkieFlexVals[(targetShot.pinkieFlexVals.count) - i]
+                let targetThumbFlexVal = targetShot.thumbFlexVals[(targetShot.thumbFlexVals.count) - i]
+                let targetWristFlexVal = targetShot.wristFlexVals[(targetShot.wristFlexVals.count) - i]
+                
                 
                 xAccSimilarity       += similairityValue(v1: shotXAccVal, v2: targetShotXAccVal)
                 yAccSimilarity       += similairityValue(v1: shotYAccVal, v2: targetShotYAccVal)
@@ -86,9 +93,10 @@ struct GloveModel: Identifiable {
                 zGyroSimilarity      += similairityValue(v1: shotZGyroVal, v2: targetShotZGyroVal)
                 pointFlexSimilarity  += similairityValue(v1: shotPointFlexVal, v2: targetPointFlexVal)
                 middleFlexSimilarity += similairityValue(v1: shotMiddleFlexVal, v2: targetMiddleFlexVal)
-                ringFlexSimilairty   += similairityValue(v1: shotRingFlexVal, v2: targetPointFlexVal)
-                //pinkieFlexSimilarity += similairityValue(v1: shotPinkytFlexVal, v2: targetPinkieFlexVal)
-                    
+                ringFlexSimilairty   += similairityValue(v1: shotRingFlexVal, v2: targetRingFlexVal)
+//                pinkieFlexSimilarity += similairityValue(v1: shotPinkytFlexVal, v2: targetPinkieFlexVal)
+//                thumbFlexSimilarity  += similairityValue(v1: shotThumbFlexVal, v2: targetThumbFlexVal)
+//                wristFlexSimilarity  += similairityValue(v1: shotWristFlexVal, v2: targetWristFlexVal)
             }
             
             let numPoints: Float = Float(numAfter) - 1
@@ -110,15 +118,14 @@ struct GloveModel: Identifiable {
             }
             
             //var flexVal = 100 - (((1 / 3) * pointFlexSimilarity + (1 / 3) * middleFlexSimilarity + (3 / 9) * ringFlexSimilairty + (0 / 9) * pinkieFlexSimilarity) / numPoints)
-            var flexVal = 100 - (((1 / 3) * pointFlexSimilarity + (1 / 3) * middleFlexSimilarity + (3 / 9) * ringFlexSimilairty) / numPoints)
+            var flexVal = 100 - (((3 / 9) * pointFlexSimilarity + (3 / 9) * middleFlexSimilarity + (3 / 9) * ringFlexSimilairty + (0 / 9) * pinkieFlexSimilarity + (0 / 9) * thumbFlexSimilarity + (0 / 9) + wristFlexSimilarity)) / numPoints 
 
-            print(flexVal)
+            
             if flexVal < 30 {
                 flexVal = 0
             } else {
                 flexVal = (flexVal - 30) / 70 * 100
             }
-            print(flexVal)
             let overallVal = ((1/5) * accVal + (2 / 5) * gyroVal + (2 / 5) * flexVal)
             
             newShot.setSimilarities(accVal: accVal, gyroVal: gyroVal, flexVal: flexVal, overallVal: overallVal)

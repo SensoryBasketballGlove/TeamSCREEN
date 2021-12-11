@@ -17,7 +17,7 @@ struct SessionsView: View {
                 
                 List {
                     Text("Training History")
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .bold()
                         .font(.title)
                     ForEach(gloveViewModel.sessions, id:\.self) { session in

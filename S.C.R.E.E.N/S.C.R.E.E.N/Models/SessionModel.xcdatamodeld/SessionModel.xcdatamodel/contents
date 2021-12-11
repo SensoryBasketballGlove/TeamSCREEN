@@ -16,6 +16,7 @@
         <attribute name="pointFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="ringFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="selectedTab" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="thumbFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="wristFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="xAccVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="xGyroVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
@@ -36,6 +37,7 @@
         <attribute name="pointFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="ringFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="selectedTab" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="thumbFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="wristFlexVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="xAccVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
         <attribute name="xGyroVals" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Float]"/>
@@ -46,7 +48,7 @@
     </entity>
     <elements>
         <element name="SessionEntity" positionX="-225.859375" positionY="42.87509155273438" width="128" height="74"/>
-        <element name="ShotEntity" positionX="200.712890625" positionY="290.8518676757812" width="128" height="299"/>
-        <element name="TargetEntity" positionX="0" positionY="225" width="128" height="284"/>
+        <element name="ShotEntity" positionX="200.712890625" positionY="290.8518676757812" width="128" height="314"/>
+        <element name="TargetEntity" positionX="0" positionY="225" width="128" height="299"/>
     </elements>
 </model>

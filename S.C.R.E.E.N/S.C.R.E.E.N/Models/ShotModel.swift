@@ -16,6 +16,7 @@ struct ShotModel: Identifiable {
     var ringFlexVals:   [Float] = []
     var pinkieFlexVals: [Float] = []
     var wristFlexVals:  [Float] = []
+    var thumbFlexVals:  [Float] = []
     var xGyroVals:      [Float] = []
     var yGyroVals:      [Float] = []
     var zGyroVals:      [Float] = []
